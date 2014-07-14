@@ -1,0 +1,2 @@
+﻿#Set VM Video Memory to auto detect
+Get-VM|?{($_.ExtensionData.Config.Hardware.Device|?{$_.GetType().Name -eq "VirtualMachineVideoCard"}).useAutoDetect -eq $false}|%{($_|Get-View).ReconfigVM((New-Object VMware.Vim.VirtualMachineConfigSpec -Property @{DeviceChange=(New-Object VMware.Vim.VirtualDeviceConfigSpec -Property @{Operation="edit";Device=(New-Object VMware.Vim.VirtualMachineVideoCard -Property @{UseAutoDetect="$true";Key=(($_.ExtensionData.Config.Hardware.Device|?{$_.GetType().Name -eq "VirtualMachineVideoCard"}).key)})})}))}
